@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Books | The Book Store{% endblock %}
+{% block meta_description %}Discover our curated selection of rare editions, modern classics, and definitive monographs.{% endblock %}
+
+{% block content %}
+<!-- Page Header & Search -->
+<header class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop pt-section-gap pb-10">
+    <h1 class="font-display-lg text-display-lg text-primary mb-6">Explore the Archive</h1>
+    <div class="flex flex-col md:flex-row gap-gutter justify-between items-start md:items-end border-b border-outline-variant pb-4">
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            Discover our curated selection of rare editions, modern classics, and definitive monographs. Filter by discipline or search for specific volumes to add to your personal library.
+        </p>
+        <div class="relative w-full md:w-96 group">
+            <span class="material-symbols-outlined absolute left-0 bottom-2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+            <input id="live-search" class="w-full bg-transparent border-0 border-b border-outline-variant pl-8 pb-2 focus:ring-0 focus:border-primary font-body-md text-body-md text-primary placeholder:text-on-surface-variant transition-colors rounded-none" placeholder="Search by title or author..." type="text" value="{{ search }}">
+        </div>
+    </div>
+</header>
+
+<!-- Library Layout (Sidebar + Grid) -->
+<section class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop pb-section-gap grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+    <!-- Filters Sidebar -->
+    <aside class="lg:col-span-3 hidden md:block">
+        <div class="sticky top-28 pr-6">
+            <!-- Disciplines (checkboxes) -->
+            <div class="mb-8">
+                <h3 class="font-label-md text-label-md text-primary uppercase tracking-widest mb-4 pb-2 border-b border-outline-variant">Disciplines</h3>
+                <ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+                    {% for cat in categories %}
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" class="filter-checkbox filter-category rounded-DEFAULT border-outline-variant text-primary focus:ring-primary focus:ring-offset-background bg-transparent w-4 h-4" value="{{ cat }}" {% if cat in selected_categories %}checked{% endif %}>
+                            <span class="group-hover:text-primary transition-colors">{{ cat }}</span>
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- Format (checkboxes) -->
+            <div class="mb-8">
+                <h3 class="font-label-md text-label-md text-primary uppercase tracking-widest mb-4 pb-2 border-b border-outline-variant">Format</h3>
+                <ul class="space-y-3 font-body-md text-body-md text-on-surface-variant">
+                    {% for fmt in formats %}
+                    <li>
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                            <input type="checkbox" class="filter-checkbox filter-format rounded-DEFAULT border-outline-variant text-primary focus:ring-primary focus:ring-offset-background bg-transparent w-4 h-4" value="{{ fmt }}" {% if fmt in selected_formats %}checked{% endif %}>
+                            <span class="group-hover:text-primary transition-colors">{{ fmt }}</span>
+                        </label>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <button id="reset-filters-btn" class="w-full py-3 px-6 bg-transparent border border-primary text-primary font-label-md text-label-md uppercase tracking-widest hover:bg-surface-container-low transition-colors duration-300">
+                Reset Filters
+            </button>
+        </div>
+    </aside>
+    <!-- Book Grid -->
+    <div id="book-grid" class="lg:col-span-9 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-y-12 gap-x-8">
+        {% for book in books %}
+        <article class="group book-card flex flex-col animate-slide-up opacity-0" style="animation-fill-mode: forwards;" id="book-{{ book.id }}">
+            <a href="{{ url_for('book_detail', book_id=book.id) }}" class="flex flex-col flex-1">
+                <div class="relative w-full aspect-[3/4] bg-surface-container-high border border-outline-variant mb-4 overflow-hidden flex items-center justify-center p-6">
+                    {% if book.image_url %}
+                    <img alt="{{ book.title }} Cover" class="max-h-full max-w-full object-contain shadow-[0_10px_30px_rgba(26,26,26,0.1)] group-hover:scale-[1.02] transition-transform duration-500 ease-out" src="{{ book.image_url }}">
+                    {% else %}
+                    <div class="w-[70%] h-[85%] bg-primary shadow-[0_10px_30px_rgba(26,26,26,0.15)] flex items-center justify-center p-4 group-hover:scale-[1.02] transition-transform duration-500 ease-out">
+                        <h3 class="font-headline-md text-headline-md text-surface-container-lowest text-center">{{ book.title }}</h3>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="flex flex-col flex-1">
+                    <span class="font-label-sm text-label-sm text-on-surface-variant mb-1">{{ book.category }}</span>
+                    <h2 class="font-headline-md text-headline-md text-primary mb-1">{{ book.title }}</h2>
+                    <p class="font-body-md text-body-md text-on-surface-variant">by {{ book.author }}</p>
+                    <p class="font-label-md text-label-md text-primary mt-2 flex-1">${{ "%.2f"|format(book.price) }}</p>
+                </div>
+            </a>
+            <a href="{{ url_for('add_to_cart', book_id=book.id) if current_user.is_authenticated else url_for('login') }}" class="mt-4 w-full text-center border border-primary text-primary font-label-md text-label-md py-3 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors">
+                Add to Cart
+            </a>
+        </article>
+        {% endfor %}
+        {% if not books %}
+        <div id="empty-state" class="col-span-full text-center py-16">
+            <span class="material-symbols-outlined text-6xl text-outline mb-4">search_off</span>
+            <p class="font-headline-md text-headline-md text-on-surface-variant">No books found</p>
+            <p class="font-body-md text-body-md text-outline mt-2">Try adjusting your filters or search query.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+    const searchInput = document.getElementById('live-search');
+    const bookGrid = document.getElementById('book-grid');
+    const categoryCheckboxes = document.querySelectorAll('.filter-category');
+    const formatCheckboxes = document.querySelectorAll('.filter-format');
+    const resetBtn = document.getElementById('reset-filters-btn');
+    const isAuthenticated = {{ 'true' if current_user.is_authenticated else 'false' }};
+    let debounceTimer = null;
+
+    function getSelectedValues(checkboxes) {
+        return Array.from(checkboxes).filter(cb => cb.checked).map(cb => cb.value);
+    }
+
+    function buildQueryString() {
+        const params = new URLSearchParams();
+        const search = searchInput.value.trim();
+        if (search) params.set('search', search);
+        getSelectedValues(categoryCheckboxes).forEach(v => params.append('category', v));
+        getSelectedValues(formatCheckboxes).forEach(v => params.append('format', v));
+        return params.toString();
+    }
+
+    function renderBooks(books) {
+        if (books.length === 0) {
+            bookGrid.innerHTML = `
+                <div class="col-span-full text-center py-16">
+                    <span class="material-symbols-outlined text-6xl text-outline mb-4">search_off</span>
+                    <p class="font-headline-md text-headline-md text-on-surface-variant">No books found</p>
+                    <p class="font-body-md text-body-md text-outline mt-2">Try adjusting your filters or search query.</p>
+                </div>`;
+            return;
+        }
+        const loginUrl = '{{ url_for("login") }}';
+        bookGrid.innerHTML = books.map(book => {
+            const addUrl = isAuthenticated ? `/cart/add/${book.id}` : loginUrl;
+            const imageBlock = book.image_url
+                ? `<img alt="${book.title} Cover" class="max-h-full max-w-full object-contain shadow-[0_10px_30px_rgba(26,26,26,0.1)] group-hover:scale-[1.02] transition-transform duration-500 ease-out" src="${book.image_url}">`
+                : `<div class="w-[70%] h-[85%] bg-primary shadow-[0_10px_30px_rgba(26,26,26,0.15)] flex items-center justify-center p-4 group-hover:scale-[1.02] transition-transform duration-500 ease-out">
+                     <h3 class="font-headline-md text-headline-md text-surface-container-lowest text-center">${book.title}</h3>
+                   </div>`;
+            return `
+            <article class="group book-card flex flex-col animate-slide-up opacity-0" style="animation-fill-mode: forwards;" id="book-${book.id}">
+                <a href="/book/${book.id}" class="flex flex-col flex-1">
+                    <div class="relative w-full aspect-[3/4] bg-surface-container-high border border-outline-variant mb-4 overflow-hidden flex items-center justify-center p-6">
+                        ${imageBlock}
+                    </div>
+                    <div class="flex flex-col flex-1">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant mb-1">${book.category}</span>
+                        <h2 class="font-headline-md text-headline-md text-primary mb-1">${book.title}</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">by ${book.author}</p>
+                        <p class="font-label-md text-label-md text-primary mt-2 flex-1">$${book.price.toFixed(2)}</p>
+                    </div>
+                </a>
+                <a href="${addUrl}" class="mt-4 w-full text-center border border-primary text-primary font-label-md text-label-md py-3 uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-colors">
+                    Add to Cart
+                </a>
+            </article>`;
+        }).join('');
+    }
+
+    function fetchBooks() {
+        const qs = buildQueryString();
+        // Update URL without reload
+        const newUrl = '{{ url_for("explore") }}' + (qs ? '?' + qs : '');
+        window.history.replaceState({}, '', newUrl);
+
+        fetch('/api/books' + (qs ? '?' + qs : ''))
+            .then(r => r.json())
+            .then(renderBooks)
+            .catch(() => {});
+    }
+
+    function debouncedFetch() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(fetchBooks, 250);
+    }
+
+    // Live search on typing
+    searchInput.addEventListener('input', debouncedFetch);
+
+    // Filter checkboxes trigger immediate fetch
+    categoryCheckboxes.forEach(cb => cb.addEventListener('change', fetchBooks));
+    formatCheckboxes.forEach(cb => cb.addEventListener('change', fetchBooks));
+
+    // Reset all filters
+    resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        categoryCheckboxes.forEach(cb => cb.checked = false);
+        formatCheckboxes.forEach(cb => cb.checked = false);
+        fetchBooks();
+    });
+})();
+</script>
+{% endblock %}

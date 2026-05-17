@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Order History - The Book Store{% endblock %}
+
+{% block content %}
+<div class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto w-full">
+    <header class="mb-12 md:mb-16">
+        <h1 class="font-headline-lg-mobile text-headline-lg-mobile md:font-headline-lg md:text-headline-lg text-primary mb-4">Your Orders</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">View your past purchases, track current shipments, and manage your literary collection.</p>
+    </header>
+    <div class="flex flex-col gap-6">
+        {% for order in orders %}
+        <article class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT overflow-hidden transition-all duration-300{% if loop.first %} {% else %} hover:border-primary/30 cursor-pointer{% endif %}">
+            <div class="p-6 md:p-8 flex flex-col md:flex-row justify-between md:items-center gap-4 {% if not loop.first %}hover:bg-surface-container-low transition-colors duration-200{% else %}cursor-pointer hover:bg-surface-container-low transition-colors duration-200 border-b border-outline-variant{% endif %}" onclick="toggleOrder({{ loop.index }})">
+                <div class="flex flex-col md:flex-row gap-2 md:gap-8 md:items-center">
+                    <div class="flex flex-col">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Order Placed</span>
+                        <span class="font-body-md text-body-md text-primary font-medium">{{ order.date }}</span>
+                    </div>
+                    <div class="hidden md:block w-px h-8 bg-outline-variant"></div>
+                    <div class="flex flex-col">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Order Number</span>
+                        <span class="font-body-md text-body-md text-primary font-medium">{{ order.order_number }}</span>
+                    </div>
+                    <div class="hidden md:block w-px h-8 bg-outline-variant"></div>
+                    <div class="flex flex-col">
+                        <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-1">Total Amount</span>
+                        <span class="font-body-md text-body-md text-primary font-medium">${{ "%.2f"|format(order.total) }}</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between md:justify-end gap-6 mt-4 md:mt-0">
+                    {% if order.status == 'Delivered' %}
+                    <div class="px-4 py-1.5 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded-full flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">check_circle</span> Delivered
+                    </div>
+                    {% elif order.status == 'Returned' %}
+                    <div class="px-4 py-1.5 bg-surface-container-highest text-on-surface font-label-sm text-label-sm rounded-full flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">local_shipping</span> Returned
+                    </div>
+                    {% else %}
+                    <div class="px-4 py-1.5 bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm rounded-full flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">pending</span> {{ order.status }}
+                    </div>
+                    {% endif %}
+                    <button class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" id="toggle-btn-{{ loop.index }}">
+                        <span class="material-symbols-outlined {% if loop.first %}rotate-180{% endif %}">expand_more</span>
+                    </button>
+                </div>
+            </div>
+            <!-- Expanded Details -->
+            <div id="order-details-{{ loop.index }}" class="{% if not loop.first %}hidden{% endif %} p-6 md:p-8 bg-surface-container-lowest flex flex-col gap-8">
+                {% if order.items %}
+                <div class="flex flex-col gap-4">
+                    <h3 class="font-headline-md text-headline-md text-primary pb-2 border-b border-outline-variant">Items</h3>
+                    <div class="flex flex-col gap-4">
+                        {% for item in order.items %}
+                        <div class="flex justify-between items-start py-2">
+                            <div class="flex gap-4 items-start">
+                                <div class="w-16 h-24 bg-surface-container border border-outline-variant rounded-sm flex items-center justify-center overflow-hidden">
+                                    <div class="w-full h-full bg-surface-variant opacity-50"></div>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <span class="font-label-md text-label-md text-primary">{{ item.book_title }}</span>
+                                    <span class="font-body-md text-body-md text-on-surface-variant">Qty: {{ item.quantity }}</span>
+                                </div>
+                            </div>
+                            <span class="font-body-md text-body-md text-primary font-medium">${{ "%.2f"|format(item.price) }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-outline-variant">
+                    <div class="flex flex-col gap-2">
+                        <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Shipping Address</h4>
+                        <p class="font-body-md text-body-md text-primary leading-relaxed">1245 Literary Lane<br>Apt 4B<br>New York, NY 10001</p>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <h4 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Payment Method</h4>
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+                            <p class="font-body-md text-body-md text-primary">Visa ending in 4242</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+        {% if not orders %}
+        <div class="text-center py-16">
+            <span class="material-symbols-outlined text-6xl text-outline mb-4">inventory_2</span>
+            <p class="font-headline-md text-headline-md text-on-surface-variant mb-4">No orders yet</p>
+            <a href="{{ url_for('explore') }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors inline-flex items-center gap-2">
+                Start Shopping <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function toggleOrder(index) {
+    const details = document.getElementById('order-details-' + index);
+    const btn = document.getElementById('toggle-btn-' + index);
+    if (details) {
+        details.classList.toggle('hidden');
+        const icon = btn.querySelector('.material-symbols-outlined');
+        icon.classList.toggle('rotate-180');
+    }
+}
+</script>
+{% endblock %}

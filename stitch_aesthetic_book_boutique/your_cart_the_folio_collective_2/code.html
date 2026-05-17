@@ -1,0 +1,295 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title content="Shopping Cart - The Book Store">Shopping Cart - Folio</title>
+<!-- Google Fonts: Bodoni Moda & Hanken Grotesk -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;500;600;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#c8c6c5",
+                        "surface-dim": "#dbdad6",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdbce",
+                        "surface-container-high": "#e9e8e4",
+                        "on-secondary-fixed": "#0b1f18",
+                        "inverse-surface": "#2f312e",
+                        "on-background": "#1b1c1a",
+                        "on-surface": "#1b1c1a",
+                        "background": "#faf9f5",
+                        "inverse-on-surface": "#f2f1ed",
+                        "secondary-fixed": "#d1e8dd",
+                        "on-surface-variant": "#444748",
+                        "surface-bright": "#faf9f5",
+                        "inverse-primary": "#c8c6c5",
+                        "surface-container-highest": "#e3e2df",
+                        "outline-variant": "#c4c7c7",
+                        "outline": "#747878",
+                        "on-primary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed": "#370e00",
+                        "surface-variant": "#e3e2df",
+                        "primary": "#000000",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#474746",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-container": "#370e00",
+                        "on-tertiary-fixed-variant": "#71361d",
+                        "primary-container": "#1c1b1b",
+                        "primary-fixed": "#e5e2e1",
+                        "on-secondary-container": "#52675e",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#858383",
+                        "tertiary": "#000000",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#4e635a",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-low": "#f4f4f0",
+                        "secondary-fixed-dim": "#b5ccc1",
+                        "on-secondary-fixed-variant": "#374b43",
+                        "surface-container": "#efeeea",
+                        "on-tertiary-container": "#ba7153",
+                        "secondary-container": "#cee5da",
+                        "surface-tint": "#5f5e5e",
+                        "surface": "#faf9f5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "80px",
+                        "container-max-width": "1280px",
+                        "margin-mobile": "20px",
+                        "unit": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Bodoni Moda"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "display-lg": ["Bodoni Moda"],
+                        "headline-md": ["Bodoni Moda"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "label-md": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Bodoni Moda"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.2", "fontWeight": "500" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["28px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.surface');
+            color: theme('colors.on-surface');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="w-full top-0 sticky bg-surface dark:bg-background border-b border-outline-variant dark:border-outline z-50 transition-all duration-200">
+<div class="flex justify-between items-center h-20 px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto">
+<!-- Brand -->
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed tracking-tight" href="#"><img src="https://lh3.googleusercontent.com/aida/ADBb0uhUDQIidUM1oT6xQURf2JnITlj0OLuuHB3A6lAl-8Idty314m7uPKPKYRxTNEYgjWF2bFmpik7o8aw87AcogEjyaORTKVeudooxTf2TIGO2d1BAdC65zG3WsIgDzD-7h0KVCDVfAXc6d5TRgpXEIYCpFaDianjUDUYTElqqtS-8sW61cVibQMfUcLez_6fjPTRgMBsFmQgvoc8yFDoWfT-C_iP6Y4tuXG_oYBiOwClVJ1C4Wlm0ztK8sn0" alt="The Book Store Logo" class="h-12 w-auto object-contain"></a>
+<!-- Navigation Links (Web) -->
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="h-full flex items-center font-label-md text-label-md text-primary dark:text-primary-fixed border-b border-primary dark:border-primary-fixed pb-1 mt-1" href="#">
+                    Explore
+                </a>
+<a class="h-full flex items-center font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-all duration-300 px-3" href="#">
+                    Curations
+                </a>
+<a class="h-full flex items-center font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-all duration-300 px-3" href="#">
+                    Journal
+                </a>
+<a class="h-full flex items-center font-label-md text-label-md text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-all duration-300 px-3" href="#">
+                    Archive
+                </a>
+</nav>
+<!-- Trailing Icons -->
+<div class="flex items-center gap-4 text-primary dark:text-primary-fixed">
+<button aria-label="account_circle" class="hover:opacity-80 transition-opacity p-2">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+<button aria-label="shopping_cart" class="hover:opacity-80 transition-opacity p-2 relative">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-0 right-0 font-label-sm text-[10px] bg-primary text-on-primary rounded-full w-4 h-4 flex items-center justify-center">2</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+<!-- Page Header -->
+<div class="mb-16">
+<h1 class="font-display-lg text-display-lg text-primary mb-4">Cart</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">2 items securely reserved for you.</p>
+</div>
+<!-- Cart Layout Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-16 items-start">
+<!-- Cart Items List (Left Column) -->
+<div class="lg:col-span-8 flex flex-col gap-10">
+<!-- Headers (Hidden on Mobile) -->
+<div class="hidden md:grid grid-cols-12 gap-6 border-b border-outline-variant pb-4 font-label-md text-label-md text-on-surface-variant">
+<div class="col-span-6">Item</div>
+<div class="col-span-3 text-center">Quantity</div>
+<div class="col-span-3 text-right">Total</div>
+</div>
+<!-- Item 1 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start md:items-center py-6 border-b border-outline-variant hover:bg-surface-container-low transition-colors duration-300 -mx-4 px-4 md:mx-0 md:px-0">
+<!-- Product Info -->
+<div class="md:col-span-6 flex gap-6 items-start">
+<div class="w-24 md:w-32 flex-shrink-0 aspect-[2/3] border border-outline-variant bg-surface-container overflow-hidden">
+<img alt="The Architecture of Light Book Cover" class="w-full h-full object-cover mix-blend-multiply opacity-90 hover:scale-105 transition-transform duration-700" data-alt="A sophisticated, high-end editorial photograph of a minimalist hardcover book titled 'The Architecture of Light'. The book rests flat on an unvarnished oak table in a brightly lit, modern studio with soft, diffused natural daylight. The cover features a stark, elegant geometric design in pure white and deep black ink. The overall mood is scholarly, serene, and luxurious, fitting a high-end private library aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBupme-CZY3uMxh4MXttspRVmBNNfU8rM9JwbsKof7tJsdQf2zNDNoDIqXyTeV2Y4bCF16JtMxIEfyVvYyvX6psd16R6PBhSQcWLnBPI5SUbOcNmar3rtT18upv4qPvntpY1mTSwBG1asSkUuelrX6x6t1yUopmqGe1eDQCkR00lhXTtkWzQg58qTZZzqV6k4CypkX4clN-2Xz7AeT-OR7c4887hN9Ms7Fes5H_W41WZAxr-SDQRg2DIfoBzN7d0UIEbPebd2C17fo">
+</div>
+<div class="flex flex-col gap-2 pt-2">
+<h3 class="font-headline-md text-headline-md text-primary leading-tight">The Architecture of Light</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Hardcover Edition</p>
+<button class="text-left mt-2 font-label-sm text-label-sm text-outline hover:text-error transition-colors flex items-center gap-1 w-fit">
+<span class="material-symbols-outlined" style="font-size: 16px;">close</span> Remove
+                            </button>
+</div>
+</div>
+<!-- Quantity Adjuster -->
+<div class="md:col-span-3 flex justify-start md:justify-center">
+<div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden">
+<button aria-label="Decrease quantity" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+</button>
+<span class="font-label-md text-label-md text-primary w-8 text-center">1</span>
+<button aria-label="Increase quantity" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+</button>
+</div>
+</div>
+<!-- Price -->
+<div class="md:col-span-3 text-left md:text-right font-body-lg text-body-lg text-primary pt-2 md:pt-0">
+                        $65.00
+                    </div>
+</div>
+<!-- Item 2 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start md:items-center py-6 border-b border-outline-variant hover:bg-surface-container-low transition-colors duration-300 -mx-4 px-4 md:mx-0 md:px-0">
+<!-- Product Info -->
+<div class="md:col-span-6 flex gap-6 items-start">
+<div class="w-24 md:w-32 flex-shrink-0 aspect-[2/3] border border-outline-variant bg-surface-container overflow-hidden">
+<img alt="Silent Spaces Book Cover" class="w-full h-full object-cover mix-blend-multiply opacity-90 hover:scale-105 transition-transform duration-700" data-alt="A luxurious editorial product shot of a limited edition art book titled 'Silent Spaces' bound in muted sage green linen. The book is angled slightly on a pristine, flat paper background, casting a very soft, minimal shadow. Warm, ambient lighting highlights the tactile texture of the fabric cover. The aesthetic is extremely clean, minimalist, and deeply intentional, evoking the quiet authority of a curated collection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATzGUx812HBcAR3_lgrhZg5FiohLbPKYLi3XfA-2aGN7WL1acDyPky2IKJEzN4iBjQDkXBTsKt7m-P3ED7aNL9ijobIT4s6PU9QHygED_3jo9Fl2Et0qRbanPARmPyoXYXmISkbjVc6bwvhRCmYiVyYJlzHa-AJZaf20dkhI-4BeyoTy9sMRQ5FnG7ev0nE23IF36CldEy_JvcYu3asQXkIYfNng8qCq20yRkdg_h58q5QpOvWlOQQ8mqzE9EfEUVhjS6sWn1pxvc">
+</div>
+<div class="flex flex-col gap-2 pt-2">
+<h3 class="font-headline-md text-headline-md text-primary leading-tight">Silent Spaces</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Linen Bound Monograph</p>
+<button class="text-left mt-2 font-label-sm text-label-sm text-outline hover:text-error transition-colors flex items-center gap-1 w-fit">
+<span class="material-symbols-outlined" style="font-size: 16px;">close</span> Remove
+                            </button>
+</div>
+</div>
+<!-- Quantity Adjuster -->
+<div class="md:col-span-3 flex justify-start md:justify-center">
+<div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden">
+<button aria-label="Decrease quantity" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">remove</span>
+</button>
+<span class="font-label-md text-label-md text-primary w-8 text-center">1</span>
+<button aria-label="Increase quantity" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined" style="font-size: 16px;">add</span>
+</button>
+</div>
+</div>
+<!-- Price -->
+<div class="md:col-span-3 text-left md:text-right font-body-lg text-body-lg text-primary pt-2 md:pt-0">
+                        $120.00
+                    </div>
+</div>
+</div>
+<!-- Order Summary (Right Column) -->
+<div class="lg:col-span-4 mt-12 lg:mt-0">
+<div class="bg-surface border border-outline-variant p-8 sticky top-32">
+<h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Summary</h2>
+<div class="flex flex-col gap-4 mb-8">
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
+<span class="font-body-md text-body-md text-primary">$185.00</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Shipping</span>
+<span class="font-label-sm text-label-sm text-outline-variant">Calculated at checkout</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-surface-variant">Taxes</span>
+<span class="font-label-sm text-label-sm text-outline-variant">Calculated at checkout</span>
+</div>
+</div>
+<div class="flex justify-between items-center border-t border-outline-variant pt-6 mb-8">
+<span class="font-label-md text-label-md text-primary">Total Estimated</span>
+<span class="font-headline-md text-headline-md text-primary">$185.00</span>
+</div>
+<button class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        Proceed to Checkout
+                        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+</button>
+<div class="mt-6 text-center">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4" href="#">Continue Browsing</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-surface dark:bg-background border-t border-outline-variant dark:border-outline">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center px-margin-mobile md:px-margin-desktop max-w-container-max-width mx-auto gap-gutter">
+<!-- Brand & Copyright -->
+<div class="space-y-4">
+<div class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">The Book Store</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 The Book Store. All Rights Reserved. Printed in digital ink.</p>
+</div>
+<!-- Links -->
+<nav class="flex flex-wrap gap-x-8 gap-y-4 font-body-md text-body-md text-on-surface-variant dark:text-outline-variant">
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-200" href="#">Shipping &amp; Returns</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-200" href="#">Privacy Policy</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-200" href="#">Terms of Service</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-200" href="#">Wholesale</a>
+<a class="hover:text-secondary dark:hover:text-secondary-fixed transition-colors duration-200" href="#">Contact</a>
+</nav>
+</div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

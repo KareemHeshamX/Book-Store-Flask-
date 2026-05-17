@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - The Book Store{% endblock %}
+
+{% block content %}
+<div class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col md:flex-row gap-gutter">
+    <!-- Admin Sidebar -->
+    <aside class="w-full md:w-64 shrink-0 border-r border-outline-variant pr-8">
+        <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Admin Panel</h2>
+        <nav class="flex flex-col gap-2">
+            <a href="{{ url_for('admin_dashboard') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Dashboard</a>
+            <a href="{{ url_for('admin_books') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Books</a>
+            <a href="{{ url_for('admin_users') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Users</a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1">
+        <h1 class="font-display-md text-display-md text-primary mb-8">Overview</h1>
+        
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+            <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg">
+                <span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-2">Total Sales</span>
+                <span class="font-headline-lg text-headline-lg text-primary">${{ "%.2f"|format(total_sales) }}</span>
+            </div>
+            <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg">
+                <span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-2">Books in Catalog</span>
+                <span class="font-headline-lg text-headline-lg text-primary">{{ book_count }}</span>
+            </div>
+            <div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-lg">
+                <span class="block font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-2">Total Users</span>
+                <span class="font-headline-lg text-headline-lg text-primary">{{ user_count }}</span>
+            </div>
+        </div>
+
+        <h2 class="font-headline-md text-headline-md text-primary mb-6">Recent Orders</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-outline-variant">
+                        <th class="py-4 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Order Number</th>
+                        <th class="py-4 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Date</th>
+                        <th class="py-4 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Customer</th>
+                        <th class="py-4 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Total</th>
+                        <th class="py-4 px-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr class="border-b border-outline-variant hover:bg-surface-container-lowest transition-colors">
+                        <td class="py-4 px-4 font-body-md text-body-md text-primary">{{ order.order_number }}</td>
+                        <td class="py-4 px-4 font-body-md text-body-md text-on-surface-variant">{{ order.date }}</td>
+                        <td class="py-4 px-4 font-body-md text-body-md text-primary">{{ order.user.full_name }}</td>
+                        <td class="py-4 px-4 font-body-md text-body-md text-primary">${{ "%.2f"|format(order.total) }}</td>
+                        <td class="py-4 px-4 font-label-sm text-label-sm">
+                            <span class="px-3 py-1 rounded-full {% if order.status == 'Delivered' %}bg-secondary-container text-on-secondary-container{% else %}bg-surface-container-high text-on-surface{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not orders %}
+                    <tr>
+                        <td colspan="5" class="py-8 text-center font-body-md text-on-surface-variant">No orders yet.</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

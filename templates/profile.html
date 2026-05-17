@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Profile - The Book Store{% endblock %}
+
+{% block content %}
+<div class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap flex flex-col gap-section-gap min-h-screen">
+    <!-- Profile Header -->
+    <section class="flex flex-col md:flex-row items-start md:items-center gap-gutter border-b border-outline-variant pb-section-gap">
+        <div class="w-32 h-32 rounded-full overflow-hidden border border-outline-variant shrink-0 bg-surface-container flex items-center justify-center relative group">
+            {% if current_user.profile_picture %}
+            <img src="{{ url_for('static', filename='uploads/' + current_user.profile_picture) }}" alt="Profile" class="w-full h-full object-cover">
+            {% else %}
+            <span class="material-symbols-outlined text-5xl text-outline">person</span>
+            {% endif %}
+            
+            <div class="absolute inset-0 bg-primary/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity gap-2">
+                <button onclick="document.getElementById('upload-pic').click()" class="text-on-primary font-label-sm text-label-sm hover:underline">Upload</button>
+                {% if current_user.profile_picture %}
+                <form method="POST" action="{{ url_for('update_profile_picture') }}" class="m-0">
+                    <input type="hidden" name="action" value="remove">
+                    <button type="submit" class="text-error font-label-sm text-label-sm hover:underline">Remove</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <form id="upload-form" method="POST" action="{{ url_for('update_profile_picture') }}" enctype="multipart/form-data" class="hidden">
+            <input type="hidden" name="action" value="upload">
+            <input type="file" id="upload-pic" name="picture" accept="image/*" onchange="document.getElementById('upload-form').submit()">
+        </form>
+        <div class="flex-1">
+            <h1 class="font-display-lg text-display-lg text-primary mb-2">{{ current_user.full_name }}</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant">Bibliophile &amp; Collector since {{ current_user.member_since }}</p>
+        </div>
+        <div class="mt-6 md:mt-0 flex gap-3">
+            <a href="{{ url_for('logout') }}" class="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors">Sign Out</a>
+        </div>
+    </section>
+    <!-- Profile Details Bento Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+        <div class="col-span-1 md:col-span-8 flex flex-col gap-8">
+            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('edit_profile') }}">
+                <h2 class="font-headline-md text-headline-md text-primary mb-6">Personal Details</h2>
+                <div class="space-y-6">
+                    <div class="group">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-2 uppercase">Full Name</label>
+                        <input type="text" name="full_name" value="{{ current_user.full_name }}" class="w-full bg-transparent border-0 border-b border-outline-variant pb-2 font-body-lg text-body-lg text-on-surface focus:ring-0 focus:border-primary transition-colors px-0">
+                    </div>
+                    <div class="group">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-2 uppercase">Username</label>
+                        <input type="text" name="username" value="{{ current_user.username }}" class="w-full bg-transparent border-0 border-b border-outline-variant pb-2 font-body-lg text-body-lg text-on-surface focus:ring-0 focus:border-primary transition-colors px-0">
+                    </div>
+                    <div class="group">
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-2 uppercase">Email Address</label>
+                        <input type="email" name="email" value="{{ current_user.email }}" class="w-full bg-transparent border-0 border-b border-outline-variant pb-2 font-body-lg text-body-lg text-on-surface focus:ring-0 focus:border-primary transition-colors px-0">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button type="submit" class="bg-primary text-on-primary font-label-md px-6 py-2 uppercase tracking-widest hover:opacity-90 transition-opacity">Save Changes</button>
+                </div>
+            </form>
+            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('change_password') }}">
+                <h2 class="font-headline-md text-headline-md text-primary mb-6">Security</h2>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-2 uppercase">Current Password</label>
+                        <input type="password" name="old_password" required class="w-full bg-transparent border-0 border-b border-outline-variant pb-2 font-body-lg text-body-lg text-on-surface focus:ring-0 focus:border-primary transition-colors px-0 tracking-widest" placeholder="••••••••••••">
+                    </div>
+                    <div>
+                        <label class="block font-label-md text-label-md text-on-surface-variant mb-2 uppercase">New Password</label>
+                        <input type="password" name="new_password" required class="w-full bg-transparent border-0 border-b border-outline-variant pb-2 font-body-lg text-body-lg text-on-surface focus:ring-0 focus:border-primary transition-colors px-0 tracking-widest" placeholder="••••••••••••">
+                    </div>
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button type="submit" class="border border-primary text-primary font-label-md px-6 py-2 uppercase tracking-widest hover:bg-surface-container transition-colors">Update Password</button>
+                </div>
+            </form>
+        </div>
+        <!-- Order History Access Card -->
+        <div class="col-span-1 md:col-span-4 flex flex-col">
+            <a class="block bg-primary text-on-primary rounded-lg p-8 h-full flex flex-col justify-between group hover:opacity-95 transition-opacity" href="{{ url_for('orders') }}">
+                <div>
+                    <div class="w-12 h-12 rounded-full bg-surface-container-low/10 flex items-center justify-center mb-6">
+                        <span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+                    </div>
+                    <h2 class="font-headline-md text-headline-md mb-4">Order History</h2>
+                    <p class="font-body-md text-body-md text-on-primary/80">Review your past acquisitions, track current shipments, and manage your literary collection.</p>
+                </div>
+                <div class="mt-12 flex items-center gap-2 font-label-md text-label-md uppercase tracking-widest group-hover:gap-4 transition-all">
+                    View Archive <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </a>
+        </div>
+    </section>
+</div>
+{% endblock %}

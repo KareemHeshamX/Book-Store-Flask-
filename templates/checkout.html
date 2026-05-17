@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Checkout - The Book Store{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+    <div class="mb-16">
+        <h1 class="font-display-lg text-display-lg text-primary mb-4">Checkout</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">Complete your acquisition.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-16 items-start">
+        <div class="lg:col-span-8 flex flex-col gap-10">
+            <div class="bg-surface-container-low p-8 border border-outline-variant rounded-DEFAULT">
+                <h2 class="font-headline-md text-headline-md text-primary mb-6">Payment Details</h2>
+                <form id="payment-form" method="POST" action="{{ url_for('checkout') }}" class="space-y-6">
+                    <div>
+                        <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block mb-2">Cardholder Name</label>
+                        <input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-body-md text-body-md text-primary focus:ring-0 focus:border-secondary transition-colors" type="text" placeholder="Name on card" required>
+                    </div>
+                    <div>
+                        <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block mb-2">Card Number</label>
+                        <input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-body-md text-body-md text-primary focus:ring-0 focus:border-secondary transition-colors" type="text" placeholder="0000 0000 0000 0000" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block mb-2">Expiry Date</label>
+                            <input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-body-md text-body-md text-primary focus:ring-0 focus:border-secondary transition-colors" type="text" placeholder="MM/YY" required>
+                        </div>
+                        <div>
+                            <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block mb-2">CVC</label>
+                            <input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-body-md text-body-md text-primary focus:ring-0 focus:border-secondary transition-colors" type="text" placeholder="123" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="lg:col-span-4">
+            <div class="bg-surface border border-outline-variant p-8 sticky top-32">
+                <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Order Summary</h2>
+                <div class="flex flex-col gap-4 mb-8">
+                    {% for item in items %}
+                    <div class="flex justify-between items-center">
+                        <span class="font-body-md text-body-md text-on-surface-variant truncate mr-4">{{ item.book.title }} (x{{ item.quantity }})</span>
+                        <span class="font-body-md text-body-md text-primary whitespace-nowrap">${{ "%.2f"|format(item.book.price * item.quantity) }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="flex justify-between items-center border-t border-outline-variant pt-6 mb-8">
+                    <span class="font-label-md text-label-md text-primary">Total</span>
+                    <span class="font-headline-md text-headline-md text-primary">${{ "%.2f"|format(subtotal) }}</span>
+                </div>
+                <button type="submit" form="payment-form" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                    Pay ${{ "%.2f"|format(subtotal) }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Cart - The Book Store{% endblock %}
+
+{% block content %}
+<div class="w-full max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap">
+    <div class="mb-16">
+        <h1 class="font-display-lg text-display-lg text-primary mb-4">Cart</h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant">{{ items|length }} item{{ 's' if items|length != 1 }} securely reserved for you.</p>
+    </div>
+    {% if items %}
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter lg:gap-16 items-start">
+        <div class="lg:col-span-8 flex flex-col gap-10">
+            <div class="hidden md:grid grid-cols-12 gap-6 border-b border-outline-variant pb-4 font-label-md text-label-md text-on-surface-variant">
+                <div class="col-span-6">Item</div>
+                <div class="col-span-3 text-center">Quantity</div>
+                <div class="col-span-3 text-right">Total</div>
+            </div>
+            {% for item in items %}
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start md:items-center py-6 border-b border-outline-variant hover:bg-surface-container-low transition-colors duration-300 -mx-4 px-4 md:mx-0 md:px-0">
+                <div class="md:col-span-6 flex gap-6 items-start">
+                    <div class="w-24 md:w-32 flex-shrink-0 aspect-[2/3] border border-outline-variant bg-surface-container overflow-hidden">
+                        {% if item.book.image_url %}
+                        <img alt="{{ item.book.title }}" class="w-full h-full object-cover mix-blend-multiply opacity-90" src="{{ item.book.image_url }}">
+                        {% else %}
+                        <div class="w-full h-full bg-surface-variant opacity-50 flex items-center justify-center">
+                            <span class="material-symbols-outlined text-outline">book</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col gap-2 pt-2">
+                        <h3 class="font-headline-md text-headline-md text-primary leading-tight">{{ item.book.title }}</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant">{{ item.book.book_format }}</p>
+                        <a href="{{ url_for('update_cart', item_id=item.id, action='remove') }}" class="text-left mt-2 font-label-sm text-label-sm text-outline hover:text-error transition-colors flex items-center gap-1 w-fit">
+                            <span class="material-symbols-outlined" style="font-size:16px">close</span> Remove
+                        </a>
+                    </div>
+                </div>
+                <div class="md:col-span-3 flex justify-start md:justify-center">
+                    <div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden">
+                        <a href="{{ url_for('update_cart', item_id=item.id, action='decrease') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+                            <span class="material-symbols-outlined" style="font-size:16px">remove</span>
+                        </a>
+                        <span class="font-label-md text-label-md text-primary w-8 text-center">{{ item.quantity }}</span>
+                        <a href="{{ url_for('update_cart', item_id=item.id, action='increase') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+                            <span class="material-symbols-outlined" style="font-size:16px">add</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="md:col-span-3 text-left md:text-right font-body-lg text-body-lg text-primary pt-2 md:pt-0">
+                    ${{ "%.2f"|format(item.book.price * item.quantity) }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="lg:col-span-4 mt-12 lg:mt-0">
+            <div class="bg-surface border border-outline-variant p-8 sticky top-32">
+                <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Summary</h2>
+                <div class="flex flex-col gap-4 mb-8">
+                    <div class="flex justify-between items-center">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Subtotal</span>
+                        <span class="font-body-md text-body-md text-primary">${{ "%.2f"|format(subtotal) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Shipping</span>
+                        <span class="font-label-sm text-label-sm text-outline-variant">Calculated at checkout</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-body-md text-body-md text-on-surface-variant">Taxes</span>
+                        <span class="font-label-sm text-label-sm text-outline-variant">Calculated at checkout</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-center border-t border-outline-variant pt-6 mb-8">
+                    <span class="font-label-md text-label-md text-primary">Total Estimated</span>
+                    <span class="font-headline-md text-headline-md text-primary">${{ "%.2f"|format(subtotal) }}</span>
+                </div>
+                <a href="{{ url_for('checkout') }}" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                    Proceed to Checkout <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+                </a>
+                <div class="mt-6 text-center">
+                    <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4" href="{{ url_for('explore') }}">Continue Browsing</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-16">
+        <span class="material-symbols-outlined text-6xl text-outline mb-4">shopping_cart</span>
+        <p class="font-headline-md text-headline-md text-on-surface-variant mb-4">Your cart is empty</p>
+        <a href="{{ url_for('explore') }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors inline-flex items-center gap-2">
+            Start Browsing <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
