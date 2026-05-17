@@ -24,7 +24,7 @@ A premium, minimalist e-commerce web application for an independent bookstore bu
 1. **Clone the repository:**
    ```bash
    git clone <your-repo-url>
-   cd "Flask Web"
+   cd "Book Store (Flask)"
    ```
 
 2. **Install Dependencies:**
