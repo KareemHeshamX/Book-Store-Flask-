@@ -34,11 +34,11 @@
             </p>
             <div class="flex flex-col sm:flex-row gap-4 pt-4">
                 {% if featured %}
-                <a href="{{ url_for('book_detail', book_id=featured.id) }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors flex justify-center items-center">
+                <a href="{{ url_for('main.book_detail', book_id=featured.id) }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors flex justify-center items-center">
                     Acquire Edition
                 </a>
                 {% endif %}
-                <a href="{{ url_for('explore') }}" class="border border-primary text-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-surface-container-low transition-colors flex justify-center items-center">
+                <a href="{{ url_for('main.explore') }}" class="border border-primary text-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-surface-container-low transition-colors flex justify-center items-center">
                     Browse Collection
                 </a>
             </div>
@@ -55,7 +55,7 @@
 <section class="max-w-container-max-width mx-auto px-margin-mobile md:px-margin-desktop py-section-gap space-y-12 animate-slide-up opacity-0" style="animation-delay: 0.2s;">
     <div class="flex justify-between items-end border-b border-primary pb-4">
         <h2 class="font-headline-lg text-headline-lg text-primary">New Arrivals</h2>
-        <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest flex items-center gap-2" href="{{ url_for('explore') }}">
+        <a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors uppercase tracking-widest flex items-center gap-2" href="{{ url_for('main.explore') }}">
             View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
         </a>
     </div>
@@ -63,7 +63,7 @@
         {% if books|length > 1 %}
         <!-- Large Feature Card -->
         <div class="md:col-span-8 group cursor-pointer">
-            <a href="{{ url_for('book_detail', book_id=books[1].id) }}">
+            <a href="{{ url_for('main.book_detail', book_id=books[1].id) }}">
                 <div class="aspect-[16/9] md:aspect-[2/1] border border-outline-variant overflow-hidden bg-surface-container-lowest relative">
                     {% if books[1].image_url %}
                     <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 mix-blend-multiply" src="{{ books[1].image_url }}">
@@ -87,7 +87,7 @@
         <div class="md:col-span-4 flex flex-col gap-gutter">
             {% for book in books[2:4] %}
             <div class="group cursor-pointer flex-1 flex flex-col">
-                <a href="{{ url_for('book_detail', book_id=book.id) }}">
+                <a href="{{ url_for('main.book_detail', book_id=book.id) }}">
                     <div class="flex-1 border border-outline-variant overflow-hidden bg-surface-container-low min-h-[200px]">
                         {% if book.image_url %}
                         <img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale-[30%]" src="{{ book.image_url }}">
@@ -117,7 +117,7 @@
         <h2 class="font-headline-md text-headline-md text-primary">Explore by Subject</h2>
         <div class="flex flex-wrap justify-center gap-4">
             {% for cat in categories %}
-            <a href="{{ url_for('explore', category=cat) }}" class="bg-surface text-primary border border-outline-variant font-label-md text-label-md px-6 py-3 hover:bg-secondary-fixed transition-all">{{ cat }}</a>
+            <a href="{{ url_for('main.explore', category=cat) }}" class="bg-surface text-primary border border-outline-variant font-label-md text-label-md px-6 py-3 hover:bg-secondary-fixed transition-all">{{ cat }}</a>
             {% endfor %}
         </div>
     </div>

@@ -7,12 +7,12 @@
     <nav class="flex text-label-sm font-label-sm text-on-surface-variant mb-8 uppercase tracking-widest animate-fade-in opacity-0" style="animation-delay: 0.1s; animation-fill-mode: forwards;" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="inline-flex items-center">
-                <a href="{{ url_for('home') }}" class="hover:text-primary transition-colors">Home</a>
+                <a href="{{ url_for('main.home') }}" class="hover:text-primary transition-colors">Home</a>
             </li>
             <li>
                 <div class="flex items-center">
                     <span class="material-symbols-outlined text-[16px] mx-1">chevron_right</span>
-                    <a href="{{ url_for('explore', category=book.category) }}" class="hover:text-primary transition-colors">{{ book.category }}</a>
+                    <a href="{{ url_for('main.explore', category=book.category) }}" class="hover:text-primary transition-colors">{{ book.category }}</a>
                 </div>
             </li>
             <li>
@@ -66,7 +66,7 @@
             </div>
 
             <div class="mt-auto">
-                <a href="{{ url_for('add_to_cart', book_id=book.id) if current_user.is_authenticated else url_for('login') }}" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 uppercase tracking-widest hover:bg-inverse-surface transition-colors flex justify-center items-center gap-2">
+                <a href="{{ url_for('main.add_to_cart', book_id=book.id) if current_user.is_authenticated else url_for('auth.login') }}" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 uppercase tracking-widest hover:bg-inverse-surface transition-colors flex justify-center items-center gap-2">
                     Add to Cart <span class="material-symbols-outlined" style="font-size:18px">shopping_bag</span>
                 </a>
             </div>
@@ -80,7 +80,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-gutter">
             {% for rbook in related %}
             <article class="group book-card flex flex-col">
-                <a href="{{ url_for('book_detail', book_id=rbook.id) }}" class="flex flex-col flex-1">
+                <a href="{{ url_for('main.book_detail', book_id=rbook.id) }}" class="flex flex-col flex-1">
                     <div class="relative w-full aspect-[3/4] bg-surface-container-high border border-outline-variant mb-4 overflow-hidden flex items-center justify-center p-6">
                         {% if rbook.image_url %}
                         <img alt="{{ rbook.title }} Cover" class="max-h-full max-w-full object-contain shadow-lg group-hover:scale-[1.02] transition-transform duration-500 ease-out" src="{{ rbook.image_url }}">

@@ -7,9 +7,9 @@
     <aside class="w-full md:w-64 shrink-0 border-r border-outline-variant pr-8 hidden md:block">
         <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Admin Panel</h2>
         <nav class="flex flex-col gap-2">
-            <a href="{{ url_for('admin_dashboard') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Dashboard</a>
-            <a href="{{ url_for('admin_books') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Manage Books</a>
-            <a href="{{ url_for('admin_users') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Users</a>
+            <a href="{{ url_for('admin.dashboard') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Dashboard</a>
+            <a href="{{ url_for('admin.books') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Manage Books</a>
+            <a href="{{ url_for('admin.users') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Users</a>
         </nav>
     </aside>
 
@@ -40,7 +40,7 @@
                 </div>
                 <div class="mt-auto grid grid-cols-2 gap-2 border-t border-outline-variant pt-4">
                     <button onclick="openEditModal({{ book.id }}, '{{ book.title|escape }}', '{{ book.author|escape }}', {{ book.price }}, '{{ book.category|escape }}', '{{ book.book_format|escape }}', '{{ book.image_url|escape }}', `{{ book.description|escape }}`)" class="text-secondary hover:bg-surface-container-low py-2 font-label-md text-label-md border border-outline-variant rounded-sm transition-colors text-center">Edit</button>
-                    <form method="POST" action="{{ url_for('admin_books') }}" onsubmit="return confirm('Delete this book?');" class="m-0">
+                    <form method="POST" action="{{ url_for('admin.books') }}" onsubmit="return confirm('Delete this book?');" class="m-0">
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="book_id" value="{{ book.id }}">
                         <button type="submit" class="w-full text-error hover:bg-surface-container-low py-2 font-label-md text-label-md border border-error/50 rounded-sm transition-colors text-center">Delete</button>
@@ -59,7 +59,7 @@
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 class="font-headline-lg text-primary mb-6">Add New Book</h2>
-        <form method="POST" action="{{ url_for('admin_books') }}" class="space-y-4">
+        <form method="POST" action="{{ url_for('admin.books') }}" class="space-y-4">
             <input type="hidden" name="action" value="add">
             <div class="grid grid-cols-2 gap-4">
                 <div>
@@ -103,7 +103,7 @@
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 class="font-headline-lg text-primary mb-6">Edit Book</h2>
-        <form method="POST" action="{{ url_for('admin_books') }}" class="space-y-4">
+        <form method="POST" action="{{ url_for('admin.books') }}" class="space-y-4">
             <input type="hidden" name="action" value="edit">
             <input type="hidden" name="book_id" id="edit-id">
             <div class="grid grid-cols-2 gap-4">

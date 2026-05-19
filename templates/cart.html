@@ -30,18 +30,18 @@
                     <div class="flex flex-col gap-2 pt-2">
                         <h3 class="font-headline-md text-headline-md text-primary leading-tight">{{ item.book.title }}</h3>
                         <p class="font-body-md text-body-md text-on-surface-variant">{{ item.book.book_format }}</p>
-                        <a href="{{ url_for('update_cart', item_id=item.id, action='remove') }}" class="text-left mt-2 font-label-sm text-label-sm text-outline hover:text-error transition-colors flex items-center gap-1 w-fit">
+                        <a href="{{ url_for('main.update_cart', item_id=item.id, action='remove') }}" class="text-left mt-2 font-label-sm text-label-sm text-outline hover:text-error transition-colors flex items-center gap-1 w-fit">
                             <span class="material-symbols-outlined" style="font-size:16px">close</span> Remove
                         </a>
                     </div>
                 </div>
                 <div class="md:col-span-3 flex justify-start md:justify-center">
                     <div class="flex items-center border border-outline-variant rounded-DEFAULT overflow-hidden">
-                        <a href="{{ url_for('update_cart', item_id=item.id, action='decrease') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+                        <a href="{{ url_for('main.update_cart', item_id=item.id, action='decrease') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
                             <span class="material-symbols-outlined" style="font-size:16px">remove</span>
                         </a>
                         <span class="font-label-md text-label-md text-primary w-8 text-center">{{ item.quantity }}</span>
-                        <a href="{{ url_for('update_cart', item_id=item.id, action='increase') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
+                        <a href="{{ url_for('main.update_cart', item_id=item.id, action='increase') }}" class="px-3 py-2 text-on-surface-variant hover:bg-surface-variant transition-colors">
                             <span class="material-symbols-outlined" style="font-size:16px">add</span>
                         </a>
                     </div>
@@ -73,11 +73,11 @@
                     <span class="font-label-md text-label-md text-primary">Total Estimated</span>
                     <span class="font-headline-md text-headline-md text-primary">${{ "%.2f"|format(subtotal) }}</span>
                 </div>
-                <a href="{{ url_for('checkout') }}" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                <a href="{{ url_for('main.checkout') }}" class="w-full bg-primary text-on-primary font-label-md text-label-md py-4 px-8 hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
                     Proceed to Checkout <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
                 </a>
                 <div class="mt-6 text-center">
-                    <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4" href="{{ url_for('explore') }}">Continue Browsing</a>
+                    <a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors underline underline-offset-4" href="{{ url_for('main.explore') }}">Continue Browsing</a>
                 </div>
             </div>
         </div>
@@ -86,7 +86,7 @@
     <div class="text-center py-16">
         <span class="material-symbols-outlined text-6xl text-outline mb-4">shopping_cart</span>
         <p class="font-headline-md text-headline-md text-on-surface-variant mb-4">Your cart is empty</p>
-        <a href="{{ url_for('explore') }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors inline-flex items-center gap-2">
+        <a href="{{ url_for('main.explore') }}" class="bg-primary text-on-primary font-label-md text-label-md px-8 py-4 uppercase tracking-widest hover:bg-inverse-surface transition-colors inline-flex items-center gap-2">
             Start Browsing <span class="material-symbols-outlined" style="font-size:18px">arrow_forward</span>
         </a>
     </div>

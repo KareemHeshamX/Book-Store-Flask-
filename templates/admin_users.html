@@ -7,9 +7,9 @@
     <aside class="w-full md:w-64 shrink-0 border-r border-outline-variant pr-8 hidden md:block">
         <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Admin Panel</h2>
         <nav class="flex flex-col gap-2">
-            <a href="{{ url_for('admin_dashboard') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Dashboard</a>
-            <a href="{{ url_for('admin_books') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Books</a>
-            <a href="{{ url_for('admin_users') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Manage Users</a>
+            <a href="{{ url_for('admin.dashboard') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Dashboard</a>
+            <a href="{{ url_for('admin.books') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Books</a>
+            <a href="{{ url_for('admin.users') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Manage Users</a>
         </nav>
     </aside>
 
@@ -47,14 +47,14 @@
                         <td class="py-4 px-4 text-right">
                             <div class="flex items-center justify-end gap-2">
                                 {% if user.id != current_user.id %}
-                                <form method="POST" action="{{ url_for('admin_users') }}" class="m-0">
+                                <form method="POST" action="{{ url_for('admin.users') }}" class="m-0">
                                     <input type="hidden" name="action" value="toggle_admin">
                                     <input type="hidden" name="user_id" value="{{ user.id }}">
                                     <button type="submit" class="text-secondary hover:underline font-label-sm px-2">
                                         {% if user.is_admin %}Revoke Admin{% else %}Make Admin{% endif %}
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ url_for('admin_users') }}" onsubmit="return confirm('Delete this user?');" class="m-0">
+                                <form method="POST" action="{{ url_for('admin.users') }}" onsubmit="return confirm('Delete this user?');" class="m-0">
                                     <input type="hidden" name="action" value="delete">
                                     <input type="hidden" name="user_id" value="{{ user.id }}">
                                     <button type="submit" class="text-error hover:underline font-label-sm px-2">Delete</button>
@@ -79,7 +79,7 @@
             <span class="material-symbols-outlined">close</span>
         </button>
         <h2 class="font-headline-lg text-primary mb-6">Create Admin Account</h2>
-        <form method="POST" action="{{ url_for('admin_users') }}" class="space-y-4">
+        <form method="POST" action="{{ url_for('admin.users') }}" class="space-y-4">
             <input type="hidden" name="action" value="add_admin">
             <div>
                 <label class="block font-label-sm uppercase tracking-widest text-on-surface-variant mb-1">Full Name</label>

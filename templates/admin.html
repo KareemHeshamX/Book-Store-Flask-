@@ -7,9 +7,9 @@
     <aside class="w-full md:w-64 shrink-0 border-r border-outline-variant pr-8">
         <h2 class="font-headline-md text-headline-md text-primary mb-8 border-b border-outline-variant pb-4">Admin Panel</h2>
         <nav class="flex flex-col gap-2">
-            <a href="{{ url_for('admin_dashboard') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Dashboard</a>
-            <a href="{{ url_for('admin_books') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Books</a>
-            <a href="{{ url_for('admin_users') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Users</a>
+            <a href="{{ url_for('admin.dashboard') }}" class="px-4 py-3 bg-primary text-on-primary font-label-md text-label-md rounded-DEFAULT">Dashboard</a>
+            <a href="{{ url_for('admin.books') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Books</a>
+            <a href="{{ url_for('admin.users') }}" class="px-4 py-3 text-on-surface-variant hover:bg-surface-container-low font-label-md text-label-md rounded-DEFAULT transition-colors">Manage Users</a>
         </nav>
     </aside>
 

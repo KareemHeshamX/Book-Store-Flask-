@@ -11,7 +11,7 @@
         <div class="lg:col-span-8 flex flex-col gap-10">
             <div class="bg-surface-container-low p-8 border border-outline-variant rounded-DEFAULT">
                 <h2 class="font-headline-md text-headline-md text-primary mb-6">Payment Details</h2>
-                <form id="payment-form" method="POST" action="{{ url_for('checkout') }}" class="space-y-6">
+                <form id="payment-form" method="POST" action="{{ url_for('main.checkout') }}" class="space-y-6">
                     <div>
                         <label class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant block mb-2">Cardholder Name</label>
                         <input class="w-full bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-body-md text-body-md text-primary focus:ring-0 focus:border-secondary transition-colors" type="text" placeholder="Name on card" required>

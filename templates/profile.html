@@ -15,14 +15,14 @@
             <div class="absolute inset-0 bg-primary/50 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity gap-2">
                 <button onclick="document.getElementById('upload-pic').click()" class="text-on-primary font-label-sm text-label-sm hover:underline">Upload</button>
                 {% if current_user.profile_picture %}
-                <form method="POST" action="{{ url_for('update_profile_picture') }}" class="m-0">
+                <form method="POST" action="{{ url_for('main.update_profile_picture') }}" class="m-0">
                     <input type="hidden" name="action" value="remove">
                     <button type="submit" class="text-error font-label-sm text-label-sm hover:underline">Remove</button>
                 </form>
                 {% endif %}
             </div>
         </div>
-        <form id="upload-form" method="POST" action="{{ url_for('update_profile_picture') }}" enctype="multipart/form-data" class="hidden">
+        <form id="upload-form" method="POST" action="{{ url_for('main.update_profile_picture') }}" enctype="multipart/form-data" class="hidden">
             <input type="hidden" name="action" value="upload">
             <input type="file" id="upload-pic" name="picture" accept="image/*" onchange="document.getElementById('upload-form').submit()">
         </form>
@@ -31,13 +31,13 @@
             <p class="font-body-lg text-body-lg text-on-surface-variant">Bibliophile &amp; Collector since {{ current_user.member_since }}</p>
         </div>
         <div class="mt-6 md:mt-0 flex gap-3">
-            <a href="{{ url_for('logout') }}" class="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors">Sign Out</a>
+            <a href="{{ url_for('auth.logout') }}" class="border border-outline-variant text-on-surface-variant font-label-md text-label-md px-6 py-3 rounded-DEFAULT hover:bg-surface-container-low transition-colors">Sign Out</a>
         </div>
     </section>
     <!-- Profile Details Bento Grid -->
     <section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
         <div class="col-span-1 md:col-span-8 flex flex-col gap-8">
-            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('edit_profile') }}">
+            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('main.edit_profile') }}">
                 <h2 class="font-headline-md text-headline-md text-primary mb-6">Personal Details</h2>
                 <div class="space-y-6">
                     <div class="group">
@@ -57,7 +57,7 @@
                     <button type="submit" class="bg-primary text-on-primary font-label-md px-6 py-2 uppercase tracking-widest hover:opacity-90 transition-opacity">Save Changes</button>
                 </div>
             </form>
-            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('change_password') }}">
+            <form class="bg-surface-container-low rounded-lg p-8 border border-outline-variant" method="POST" action="{{ url_for('main.change_password') }}">
                 <h2 class="font-headline-md text-headline-md text-primary mb-6">Security</h2>
                 <div class="space-y-6">
                     <div>
@@ -76,7 +76,7 @@
         </div>
         <!-- Order History Access Card -->
         <div class="col-span-1 md:col-span-4 flex flex-col">
-            <a class="block bg-primary text-on-primary rounded-lg p-8 h-full flex flex-col justify-between group hover:opacity-95 transition-opacity" href="{{ url_for('orders') }}">
+            <a class="block bg-primary text-on-primary rounded-lg p-8 h-full flex flex-col justify-between group hover:opacity-95 transition-opacity" href="{{ url_for('main.orders') }}">
                 <div>
                     <div class="w-12 h-12 rounded-full bg-surface-container-low/10 flex items-center justify-center mb-6">
                         <span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
