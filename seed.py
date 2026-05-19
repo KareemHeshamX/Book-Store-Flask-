@@ -1,10 +1,3 @@
-"""
-Database seeder for The Book Store.
-
-Populates the database with sample books, a demo admin user, and sample orders.
-Only runs when the respective tables are empty (safe for repeated calls).
-"""
-
 from extensions import db
 from models import Book, User, Order, OrderItem
 

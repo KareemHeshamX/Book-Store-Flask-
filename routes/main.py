@@ -1,7 +1,3 @@
-"""
-Main storefront routes — home, explore, book detail, cart, checkout, orders, profile.
-"""
-
 import os
 from datetime import datetime
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app

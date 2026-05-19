@@ -1,7 +1,3 @@
-"""
-API routes — JSON endpoints for live search and AJAX operations.
-"""
-
 from flask import Blueprint, request, jsonify
 from models import Book
 

@@ -1,9 +1,3 @@
-"""
-The Book Store — Application Entry Point.
-
-Creates and configures the Flask application using the factory pattern.
-"""
-
 import os
 from flask import Flask
 from flask_login import current_user
@@ -14,7 +8,6 @@ from seed import seed_database
 
 
 def create_app():
-    """Application factory — builds and returns a configured Flask app."""
     app = Flask(__name__)
 
     # ─── Configuration ──────────────────────────────────────────────────────
